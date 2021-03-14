@@ -10,10 +10,17 @@ const buffer = readFile('data.txt')
 // collect in data structure
 const activities = parseData(buffer)
 
+const walks = activities?.Walk
+const runs = activities?.Run
+
 // calculate stats
 const reducer = (total, activity) => total += parseFloat(activity.distance)
-let totalDistance = activities.reduce(reducer, 0.0)
-console.log(totalDistance)
+
+const totalWalkDistance = walks.reduce(reducer, 0.0)
+console.log('totalWalkDistance', totalWalkDistance)
+
+const totalRunDistance = runs.reduce(reducer, 0.0)
+console.log('totalRunDistance', totalRunDistance)
 
 // write out new data file
 //writeFile(filter)

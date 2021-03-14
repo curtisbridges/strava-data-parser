@@ -21,18 +21,25 @@ export const parseData = (buffer) => {
   let activities = []
   const lines = buffer.split('\n')
   for (let line of lines) {
-    if (!line.startsWith('Edit  Delete   Share')) {
+    if (line.trim()) {
       // Walk	Sat, 3/13/2021	Afternoon Walk	50:23	3.24 mi	95 ft	9
       const fields = line.split('\t')
-      activities.push({
+      const activity = {
         type: fields[0],
         date: fields[1],
         name: fields[2],
         time: fields[3],
         distance: fields[4].split(' ')[0],
         elevation: fields[5],
-        effort: fields[6] ?? 0
-      })
+        effort: fields[6] ?? 0,
+      }
+      const type = activity.type
+      let activitiesOfSameType = []
+      if (activities[type]) {
+        activitiesOfSameType = activities[activity.type]
+      }
+      activitiesOfSameType.push(activity)
+      activities[type] = activitiesOfSameType
     }
   }
   return activities
